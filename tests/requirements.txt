@@ -1,0 +1,5 @@
+pytest
+pytest-postgresql
+psycopg
+psycopg2-binary
+hypothesis
