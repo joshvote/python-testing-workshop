@@ -1,12 +1,12 @@
 from typing import Optional
 
-from db import Address, User
-from view import ViewUser
+from .db import Address, User
+from .view import ViewUser
 
 
 def map_user_to_view(db_user: User) -> ViewUser:
     """Converts a DB representation of a user into the view equivalent"""
-    # find first non primary address
+    # find first primary address
     first_primary_addr = next((a for a in db_user.addresses if a.is_primary), None)
 
     # map it to a simple string
@@ -24,12 +24,18 @@ def map_user_from_view(view_user: ViewUser) -> User:
 
     # map primary address back from string
     addresses: list[Address] = []
-    if view_user.primary_address:
+    if view_user.primary_address_line1:
         # NOTE - we are ignoring ID mapping as part of this example. In the real world this would either
         #        use UUID's to sidestep this issue OR it would integrate an ID lookup step
         #
         #        we are also ignoring how the whole CRUD operations will function w.r.t updating/inserting
-        addresses = [Address(address=view_user.primary_address, is_primary=True)]
+        addresses = [
+            Address(
+                address_line1=view_user.primary_address_line1,
+                address_line2=view_user.primary_address_line2,
+                is_primary=True
+            )
+        ]
 
     return User(
         display_id=view_user.display_id,
