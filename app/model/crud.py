@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, noload, selectinload
 from .db import User
 
 
-def get_user_by_id(conn_str, id: int) -> Optional[User]:
+def get_user_by_id(conn_str: str, id: int) -> Optional[User]:
     """Gets user with specific ID
 
     please don't use this in prod. It doesn't consider anything about the connection lifecycle"""
@@ -24,7 +24,7 @@ def get_user_by_id_dependency_injected(session: Session, id: int) -> Optional[Us
     return session.scalars(stmt).one_or_none()
 
 
-def get_all_users_with_addresses(conn_str) -> list[User]:
+def get_all_users_with_addresses(conn_str: str) -> list[User]:
     """Gets all users with their addresses
 
     please don't use this in prod. It doesn't consider anything about the connection lifecycle"""
