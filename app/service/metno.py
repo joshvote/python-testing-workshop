@@ -34,7 +34,7 @@ def get_location_forecast(
         altitude=location["altitude"],
     )
     headers = {"User-Agent": "bsgip.com mike.turner@anu.edu.au"}
-    response = requests.get(endpoint, headers=headers, timeout=4)
+    response = requests.get(endpoint, headers=headers)
     if response.status_code == 200:
         return response.json()
     else:
