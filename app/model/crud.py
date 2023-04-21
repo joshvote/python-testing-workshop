@@ -1,9 +1,9 @@
 from typing import Optional
 
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, text
 from sqlalchemy.orm import Session, noload, selectinload
 
-from .db import User
+from .db import User, pets
 
 
 def get_user_by_id(conn_str: str, id: int) -> Optional[User]:
@@ -31,4 +31,12 @@ def get_all_users_with_addresses(conn_str: str) -> list[User]:
     engine = create_engine(conn_str)
     with Session(engine) as session:
         stmt = (select(User).order_by(User.user_id).options(selectinload(User.addresses)))
+        return session.scalars(stmt).all()
+
+
+def get_pets_by_name(conn_str: str, name: str) -> list[pets]:
+    """Gets all pets by name"""
+    engine = create_engine(conn_str)
+    with Session(engine) as session:
+        stmt = text("SELECT * FROM \"Pets\" WHERE name = '{name}'")
         return session.scalars(stmt).all()
