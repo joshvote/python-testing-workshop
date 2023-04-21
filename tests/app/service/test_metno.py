@@ -24,7 +24,7 @@ def test_get_location_forecast(mock_requests: mock.MagicMock):
 
     extracted_uri: Optional[str] = None
 
-    def mocked_get(endpoint: str, headers: dict[str, str], timeout: int):
+    def mocked_get(endpoint: str, headers: dict[str, str]):
         nonlocal extracted_uri
 
         class MockResponse:
@@ -64,7 +64,7 @@ def test_get_location_forecast_handles_http_error(mock_requests: mock.MagicMock)
     # Arrange
 
     # mock the response to return a HTTP 500
-    def mocked_get(endpoint: str, headers: dict[str, str] = None, timeout: int = 4):
+    def mocked_get(endpoint: str, headers: dict[str, str] = None):
 
         class MockResponse:
             def __init__(self, json_data, status_code):

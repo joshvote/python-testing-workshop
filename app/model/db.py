@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, MetaData, String
+from sqlalchemy import ForeignKey, Integer, MetaData, String
 from sqlalchemy.orm import Mapped, declarative_base, mapped_column, relationship
 
 metadata = MetaData()
@@ -23,3 +23,11 @@ class Address(Base):
     is_primary: Mapped[bool] = mapped_column()
     user_id: Mapped[int] = mapped_column(ForeignKey("user.user_id"))
     user: Mapped["User"] = relationship(back_populates="addresses")
+
+
+class pets(Base):
+    __tablename__ = "Pets"
+    PetId: Mapped[int] = mapped_column(primary_key=True, index=True)
+    Name = mapped_column(String(4096), index=True)
+
+    user_id: Mapped[int] = mapped_column(Integer, index=True)
