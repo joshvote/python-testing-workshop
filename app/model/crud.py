@@ -16,6 +16,16 @@ def get_user_by_id(conn_str: str, id: int) -> Optional[User]:
         return session.scalars(stmt).one_or_none()
 
 
+def add_user(conn_str: str, user: User):
+    """Adds user to the database
+
+    please don't use this in prod. It doesn't consider anything about the connection lifecycle"""
+    engine = create_engine(conn_str)
+    with Session(engine) as session:
+        session.add(user)
+        session.commit()
+
+
 def get_user_by_id_dependency_injected(session: Session, id: int) -> Optional[User]:
     """Gets user with specific ID (using a DI style pattern)
 
@@ -45,6 +55,15 @@ def get_pets_by_name(conn_str: str, name: str) -> list[pets]:
     engine = create_engine(conn_str)
     with Session(engine) as session:
         stmt = text("SELECT * FROM \"Pets\" WHERE name = '{name}'")
+        return session.scalars(stmt).all()
+
+
+def get_users_by_name(conn_str: str, name: str) -> list[pets]:
+    """Gets all users by name"""
+
+    engine = create_engine(conn_str)
+    with Session(engine) as session:
+        stmt = text("SELECT * FROM \"user\" WHERE name = '{name}'")
         return session.scalars(stmt).all()
 
 

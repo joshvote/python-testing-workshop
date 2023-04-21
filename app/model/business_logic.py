@@ -1,7 +1,7 @@
 from typing import Optional
 
-from app.model.crud import get_pets_by_name, get_user_by_id
-from app.model.db import pets
+from app.model.crud import add_user, get_pets_by_name, get_user_by_id
+from app.model.db import User, pets
 
 PUN_NAME_1 = "Arf Vader"
 PUN_NAME_2 = "Winnie the Pooch"
@@ -39,3 +39,17 @@ def find_user_or_error(conn_str: str, user_id: int, raise_on_not_found: bool = F
         raise Exception('Not found')
     else:
         return None
+
+
+def add_validate_user(conn_str: str, user_id: int, display_id: Optional[str], email: Optional[str], name: Optional[str]):
+    """Performs all validation for a user insertion"""
+
+    # validate
+    if get_pets_by_name(conn_str, name):
+        raise Exception('User name already exists')
+    if '@' not in email:
+        raise Exception('Email is invalid')
+
+    # add to DB
+    new_user = User(user_id=user_id, display_id=display_id, email=email, name=name)
+    add_user(conn_str, new_user)
