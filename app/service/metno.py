@@ -12,10 +12,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-FORECAST_API_URL = (
-    "https://api.met.no/weatherapi/locationforecast/2.0/"
-    "{forecast_type}?lat={lat}&lon={lon}&altitude={altitude}"
-)
+FORECAST_API_URL = "https://api.met.no/weatherapi/locationforecast/2.0/{forecast_type}?lat={lat}&lon={lon}&altitude={altitude}"
 
 
 def get_location_forecast(
