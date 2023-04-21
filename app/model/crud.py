@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 from sqlalchemy import create_engine, select, text
 from sqlalchemy.orm import Session, noload, selectinload
@@ -36,7 +36,24 @@ def get_all_users_with_addresses(conn_str: str) -> list[User]:
 
 def get_pets_by_name(conn_str: str, name: str) -> list[pets]:
     """Gets all pets by name"""
+
+    # WIP
+    # with Session(engine) as session:
+    #     stmt = (select(pet).order_by(pet.user_id).options(selectinload(User.addresses)))
+    #     return session.scalars(stmt).all()
+
     engine = create_engine(conn_str)
     with Session(engine) as session:
         stmt = text("SELECT * FROM \"Pets\" WHERE name = '{name}'")
         return session.scalars(stmt).all()
+
+
+def get_pet_default(conn_str: str, pet_id, default_pet_name: dict[str, Any] = {"Name": "Barry"}) -> pets:
+    """Gets all users with their addresses"""
+    engine = create_engine(conn_str)
+    with Session(engine) as session:
+        stmt = (select(pets).filter(pets.PetId == pet_id))
+        out = session.scalars(stmt).one_or_none()
+        if out == None:
+            return pets(**default_pet_name)
+        return out
